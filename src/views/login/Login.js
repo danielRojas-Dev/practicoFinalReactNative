@@ -1,27 +1,92 @@
-import { Card, Image, Text } from '@rneui/base'
-import { StatusBar } from 'expo-status-bar'
-import React from 'react'
-import { SafeAreaView, View } from 'react-native'
+import { Button, Card, Image, Text } from "@rneui/base";
+import React, { useState } from "react";
+import { StyleSheet, TouchableHighlight, View } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 
 export const Login = () => {
-    return (
-      <>
-      <StatusBar />
-      <SafeAreaView>
-        <View >
-          <Image
-            // style={Styles.login_header_logo}
-            // source={require('./assets/logo-back4app.png')}
-          />
-          <Text >
-            <Text >
-              {'React Native on Back4App - '}
-            </Text>
-            {' User registration'}
-          </Text>
-        </View>
-        {/* <UserRegistration /> */}
-      </SafeAreaView>
-    </>
-  )
-}
+  const [usuario, setUsuario] = useState();
+  const [password, setPassword] = useState();
+  
+  return (
+    <View style={styles.container}>
+      <Image
+        style={styles.logo}
+        source={require('../../../assets/IPF-logo.png') }
+      />
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.inputs}
+          placeholder="Usuario"
+          keyboardType="text"
+          underlineColorAndroid="transparent"
+          onChangeText={(e) => setUsuario(e)}
+        />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.inputs}
+          placeholder="Contraseña"
+          secureTextEntry={true}
+          underlineColorAndroid="transparent"
+          onChangeText={(e) => setPassword(e)}
+        />
+      </View>
+
+      <TouchableHighlight
+        style={[styles.buttonContainer, styles.loginButton]}
+     
+      >
+        <Text style={styles.loginText}>Login</Text>
+      </TouchableHighlight>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#DCDCDC",
+  },
+  inputContainer: {
+    borderBottomColor: "#F5FCFF",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 30,
+    borderBottomWidth: 1,
+    width: 250,
+    height: 45,
+    marginBottom: 20,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  inputs: {
+    height: 45,
+    marginLeft: 16,
+    borderBottomColor: "#FFFFFF",
+    flex: 1,
+  },
+  logo: {
+    width: 180,
+    height: 180,
+    marginLeft: 15,
+    justifyContent: "center",
+  },
+  buttonContainer: {
+    height: 45,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+    width: 250,
+    borderRadius: 30,
+  },
+  loginButton: {
+    backgroundColor: "#00b5ec",
+  },
+  loginText: {
+    color: "white",
+  },
+});

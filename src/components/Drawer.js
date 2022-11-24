@@ -1,26 +1,36 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Home from "./Home/Home";
 import { Login } from "../views/login/Login";
+import { useEffect } from "react";
 
 const NavBar = createDrawerNavigator();
 
-const RutasAlumnos = () => {
-  return (
-    <NavBar.Navigator>
-      <NavBar.Screen name="Home" component={Home} />
-      <NavBar.Screen name="publicaciones" component={Home} />
-    </NavBar.Navigator>
-  )
-}
+// const RutasAlumnos = () => {
+//   return (
+//     <NavBar.Navigator>
+//       <NavBar.Screen name="Home" component={Home} />
+//       <NavBar.Screen name="publicaciones" component={Home} />
+//     </NavBar.Navigator>
+//   )
+// }
 
 
-export function MyDrawer () {
+export const MyDrawer = () =>  {
 
-    return (
-     <Login/>
-    );
+  const auth = async()=>{
 
+    const token = await  AsyncStorage.getItem('token');
+ 
+  
+      return (<Login/>)
+
+   }
+
+useEffect(()=>{
+
+auth()
+},[])
 
 
 }
