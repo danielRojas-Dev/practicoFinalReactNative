@@ -2,10 +2,29 @@ import { Button, Card, Image, Text } from "@rneui/base";
 import React, { useState } from "react";
 import { StyleSheet, TouchableHighlight, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
+import { useSetSession } from "../../context/SessionProvider";
+import { auth } from "../../helpers/fucntionAuth";
+
 
 export const Login = () => {
+
+
   const [usuario, setUsuario] = useState();
   const [password, setPassword] = useState();
+  const setSesion = useSetSession();
+
+  const authLogin = async () => {
+    try {
+      const loguearse = await auth(usuario, password)
+
+      setSesion(loguearse)
+
+    } catch (error) {
+      console.log(error);
+    }
+  
+  }
+
   
   return (
     <View style={styles.container}>
@@ -36,7 +55,7 @@ export const Login = () => {
 
       <TouchableHighlight
         style={[styles.buttonContainer, styles.loginButton]}
-     
+        onPress={() => authLogin()}
       >
         <Text style={styles.loginText}>Login</Text>
       </TouchableHighlight>

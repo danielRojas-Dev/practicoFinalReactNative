@@ -1,18 +1,33 @@
+import { useSetSession } from "../context/SessionProvider";
 import { url } from "./url";
 
-const first = async (paramUser, paramPass) => {
-  const response = await fetch(`${url}/login`, {
-    method: "POST",
-    body: JSON.stringify({
-      user: paramUser,
-      password: paramPass,
-    }),
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  });
+export const auth = async (paramUser, paramPass) => {
+  try {
+    const response = await fetch(`${url}/login`, {
+      method: "POST",
+      body: JSON.stringify({
+        user: paramUser,
+        password: paramPass,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
 
     const result = await response.json();
+
     
-    return result
+      if (!result.hasOwnProperty("token")) {
+        return null
+      }
+
+      return result.token
+    
+
+   
+  } catch (error) {
+    console.log(error);
+  }
+
+  // return result
 };
