@@ -1,4 +1,3 @@
-import { useSetSession } from "../context/SessionProvider";
 import { url } from "./url";
 
 export const auth = async (paramUser, paramPass) => {
@@ -18,10 +17,10 @@ export const auth = async (paramUser, paramPass) => {
 
     
       if (!result.hasOwnProperty("token")) {
-        return null
+        return result
       }
 
-      return result.token
+      return result
     
 
    

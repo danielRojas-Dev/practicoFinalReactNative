@@ -1,29 +1,35 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import {useSession} from "../context/SessionProvider"
+import {useSession, useSetSession} from "../context/SessionProvider"
 import Home from "./Home/Home";
 import { Login } from "../views/login/Login";
-
+import { Materias } from "../views/materias/Materias";
 const NavBar = createDrawerNavigator();
 
 const RutasAlumnos = () => {
+
+  const session = useSetSession();
+  const CerrarSesion = ()=>{  
+    try {
+      session(null)
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
   return (
+    
     <NavBar.Navigator>
-      <NavBar.Screen name="Home" component={Home} />
-      <NavBar.Screen name="publicaciones" component={Home} />
+      <NavBar.Screen name="Inicio" component={Home} />
+      <NavBar.Screen name="Materias" component={Materias} />
+      <NavBar.Screen name="Cerrar Sesion" component={CerrarSesion}/>
     </NavBar.Navigator>
   )
 }
 
 export const MyDrawer = () => {
-
+try {
   const session = useSession()
-
-  useEffect(() => {
-    
-    
-
-  }, [session]);
-
 
   if (session === null) {
     return <Login/>
@@ -32,6 +38,12 @@ export const MyDrawer = () => {
       <RutasAlumnos/>
    )
   }
+
+} catch (error) {
+  console.log(error);
+}
+
+
 };
 
 // export function MyDrawer() {

@@ -1,6 +1,6 @@
-import { Button, Card, Image, Text } from "@rneui/base";
+import { Image, Text } from "@rneui/base";
 import React, { useState } from "react";
-import { StyleSheet, TouchableHighlight, View } from "react-native";
+import { StyleSheet, TouchableHighlight, View, Alert } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { useSetSession } from "../../context/SessionProvider";
 import { auth } from "../../helpers/fucntionAuth";
@@ -17,7 +17,13 @@ export const Login = () => {
     try {
       const loguearse = await auth(usuario, password)
 
-      setSesion(loguearse)
+
+      if (!loguearse.hasOwnProperty("token")) {
+        await Alert.alert('ERROR',loguearse.msg,[{text:'Cancel',style:'cancel'}])
+        return
+      }
+      setSesion(loguearse.token, loguearse.data)
+   
 
     } catch (error) {
       console.log(error);
@@ -57,7 +63,7 @@ export const Login = () => {
         style={[styles.buttonContainer, styles.loginButton]}
         onPress={() => authLogin()}
       >
-        <Text style={styles.loginText}>Login</Text>
+        <Text style={styles.loginText}>Iniciar Sesion</Text>
       </TouchableHighlight>
     </View>
   );
