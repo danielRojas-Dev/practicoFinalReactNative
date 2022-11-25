@@ -1,49 +1,49 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import {useSession, useSetSession} from "../context/SessionProvider"
+import { logout, useSession, useSetSession } from "../context/SessionProvider";
 import Home from "./Home/Home";
 import { Login } from "../views/login/Login";
 import { Materias } from "../views/materias/Materias";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 const NavBar = createDrawerNavigator();
 
-const RutasAlumnos = () => {
-
-  const session = useSetSession();
-  const CerrarSesion = ()=>{  
+const CerrarSesion = () => {
+  const setSession = useSetSession();
+  const handleLogout = async () => {
     try {
-      session(null)
+      await AsyncStorage.removeItem("token");
+      setSession(null);
     } catch (error) {
       console.log(error);
     }
+  };
 
-  }
-
-  return (
-    
-    <NavBar.Navigator>
-      <NavBar.Screen name="Inicio" component={Home} />
-      <NavBar.Screen name="Materias" component={Materias} />
-      <NavBar.Screen name="Cerrar Sesion" component={CerrarSesion}/>
-    </NavBar.Navigator>
-  )
-}
+  return Alert.alert("Cerrar Sesion", "¿Desea Cerrar Sesion?", [
+    {
+      text: "Cancelar",
+      onPress: () => console.log("Cancel Pressed"),
+      style: "cancel",
+    },
+    { text: "OK", onPress: handleLogout },
+  ]);
+};
 
 export const MyDrawer = () => {
-try {
-  const session = useSession()
-
-  if (session === null) {
-    return <Login/>
-  } else {
-     return (
-      <RutasAlumnos/>
-   )
-  }
-
-} catch (error) {
-  console.log(error);
-}
-
-
+  const session = useSession();
+  // console.log(session);
+  return session === null ? (
+    <Login />
+  ) : (
+    <NavBar.Navigator>
+      <>
+        <NavBar.Screen name="Inicio" component={Home} />
+        <NavBar.Screen name="Materias" component={Materias} />
+        <NavBar.Screen name="Cerrar Sesion">
+          {(props) => <CerrarSesion {...props} />}
+        </NavBar.Screen>
+      </>
+    </NavBar.Navigator>
+  );
 };
 
 // export function MyDrawer() {

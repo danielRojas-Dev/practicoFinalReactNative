@@ -9,8 +9,8 @@ import { auth } from "../../helpers/fucntionAuth";
 export const Login = () => {
 
 
-  const [usuario, setUsuario] = useState();
-  const [password, setPassword] = useState();
+  const [usuario, setUsuario] = useState('');
+  const [password, setPassword] = useState('');
   const setSesion = useSetSession();
 
   const authLogin = async () => {

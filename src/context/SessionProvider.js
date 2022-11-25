@@ -1,40 +1,39 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
-import { set } from "react-native-reanimated";
-
 
 const SessionContext = createContext(null);
 
 const SessionProvider = ({ children }) => {
+  const [session, setSession] = useState(null);
+  const [dataUser, setDataUser] = useState();
 
-    const [session, setSession] = useState(null);
-    const [dataUser, setDataUser]= useState()
+  const existToken = async () => {
+    const token = await AsyncStorage.getItem("token");
 
-    const existToken = async () => {
-        const token = await AsyncStorage.getItem("token");
-        
-        if (token === null) {
-            return
-        }
+    if (token === null) {
+      return;
+    }
 
-        setSession(token)
-  }
+    setSession(token);
+  };
 
   useEffect(() => {
-   existToken()
-      if (session === null) {
-        setSession(null);
-
+    existToken();
+    if (session === null) {
+      setSession(null);
     } else {
-       setSession(session);
-        }
+      setSession(session);
+    }
   }, []);
 
   const setNewSession = async (token, dataUser) => {
-    setSession(token);
-    setDataUser(dataUser)
-    await AsyncStorage.setItem("token", token);
+    try {
+      setSession(token);
+      setDataUser(dataUser);
+      await AsyncStorage.setItem("token", token);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
